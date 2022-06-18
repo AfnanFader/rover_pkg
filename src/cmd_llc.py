@@ -58,7 +58,7 @@ class CommandHandler():
         elif data == "d":
             self.update_motor_cmd(0,-180,0,0)
 
-        self.ros_pub_motor_control(self.motor_cmd)
+        self.ros_pub_motor_control.publish(self.motor_cmd)
     
     def send_servo_cmd(self, data):
         if data == "i":
@@ -70,7 +70,7 @@ class CommandHandler():
         elif data == "l":
             self.update_servo_cmd(2,0)
         
-        self.ros_pub_servo_position(self.servo_cmd)
+        self.ros_pub_servo_position.publish(self.servo_cmd)
 
     def send_linear_actuator_cmd(self, data):
         if data == "q":
@@ -78,7 +78,7 @@ class CommandHandler():
         else:
             self.linear_cmd = 255
             
-        self.ros_pub_linear_direction(self.linear_cmd)
+        self.ros_pub_linear_direction.publish(self.linear_cmd)
 
     def set_status_idle(self):
         return False
@@ -101,7 +101,7 @@ class CommandHandler():
         rate = rospy.Rate(10)
         rospy.loginfo("[CmdHndlr] Main Loop Running ..")
 
-        while not rospy.signal_shutdown("[CmdHandler] Shutdown .."):
+        while not rospy.is_shutdown():
             pass
 
             # rate.sleep()
