@@ -1,4 +1,4 @@
 <launch>
-  <node name="cmd_handler" pkg="rover_pkg" type="cmd_handler_node.py" output="screen"/>
-  <node name="comm_handler" pkg="rover_pkg" type="comm_handler_node.py" output="screen"/>
+  <node name="cmdProcess" pkg="rover_pkg" type="cmd_processor.py" output="screen"/>
+  <node name="mainProcess" pkg="rover_pkg" type="main_handler.py" output="screen"/>
 </launch>
