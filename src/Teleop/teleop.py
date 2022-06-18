@@ -2,12 +2,12 @@ import zmq
 import pygame
 from pygame.locals import *
 
-RASPBERRY_IP = "127.0.0.1"
+RASPBERRY_IP = "172.19.220.138"
 TELEOP_PORT = 5600
 
 KEY_CODE_SPACE = 32
 
-TELEOP_RATE = 1 / 60  # 60 fps
+TELEOP_RATE = 25
 
 moveBindingsGame = {
     K_UP: "i",
@@ -58,7 +58,7 @@ def pygameMain():
                 end = True
 
         pygame.display.flip()
-        pygame.time.Clock().tick(1 / TELEOP_RATE)
+        pygame.time.Clock().tick(TELEOP_RATE)
 
 
 def sendToServer(socket, val):
@@ -77,5 +77,5 @@ if __name__ == '__main__':
     except KeyboardInterrupt as e:
         pass
     finally:
-        socket.send_json((-999))
+        socket.send_json(("p"))
         socket.close()
