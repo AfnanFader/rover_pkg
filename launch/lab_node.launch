@@ -1,7 +1,7 @@
 <!-- WILL BE MODIFIED AGAIN -->
 
 <launch>
-  <node name="cmdProcess" pkg="rover_pkg" type="cmd_processor.py" output="screen"/>
+  <node name="cmdProcess" pkg="rover_pkg" type="cmd_llc.py" output="screen"/>
   <node name="mainProcess" pkg="rover_pkg" type="main_handler.py" output="screen"/>
   <node name="arduino_one" pkg="rosserial_python" type="serial_node.py" output="screen"/>
   <node name="arduino_two" pkg="rosserial_python" type="serial_node.py" output="screen"/>

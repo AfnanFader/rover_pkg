@@ -1,3 +1,5 @@
+#!/usr/bin/env
+
 """
 Class for message distribution and handles all message transmisison to the arduino class.
 Also provides fine movement calculations.
@@ -83,6 +85,8 @@ class CommandHandler():
 
     def command_received(self, message):
 
+        rospy.loginfo("[CmdHndlr] DATA - {}".format(message.data))
+
         if message.data == "w" or message.data == "a" or message.data == "s" or message.data == "d":
             self.send_motor_cmd(message.data)
 
@@ -98,11 +102,9 @@ class CommandHandler():
         rospy.loginfo("[CmdHndlr] Main Loop Running ..")
 
         while not rospy.signal_shutdown("[CmdHandler] Shutdown .."):
+            pass
 
-            if self.is_idle:
-                self.set_status_idle()
-
-            rate.sleep()
+            # rate.sleep()
 
 
 if __name__ == "__main__":

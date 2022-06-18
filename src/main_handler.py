@@ -1,3 +1,5 @@
+#!/usr/bin/env
+
 import rospy
 from std_msgs.msg import String
 import time, zmq
@@ -8,7 +10,7 @@ class ZmqServer():
 
         #ROS instance
         rospy.init_node('Zmq_Server',disable_signals=True)
-        self.data_frame = String
+        self.data = String()
         self.ros_pub_motor_control = rospy.Publisher("/cmd_val", String, queue_size=2)
         rospy.loginfo("[ZmqServer] Motor arduino publisher initialized")
         
@@ -16,7 +18,6 @@ class ZmqServer():
         self.context = zmq.Context()
         self.socket = self.context.socket(zmq.PAIR)
         self.socket.bind("tcp://*:{}".format(port))
-        self.data = ""
 
     def run(self):
 
@@ -28,14 +29,15 @@ class ZmqServer():
         try:
 
             while not rospy.is_shutdown():
-                    
-                self.data = self.socket.recv_json()
-                self.ros_pub_motor_control.publish(self.data_frame)
+    
+                self.data.data = self.socket.recv_json()
 
-                if self.data == -999:
+                if self.data.data == "p":
                     rospy.loginfo("[ZmqServer] Goodbye")
                     rospy.signal_shutdown("Goodbye")
                     break
+
+                self.ros_pub_motor_control.publish(self.data)
         
         finally:
             self.socket.close()
