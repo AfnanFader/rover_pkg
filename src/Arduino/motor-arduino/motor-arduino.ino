@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <ros.h>
 #include <std_msgs/UInt16.h>
+#include <std_msgs/UInt8.h>
 #include <rover_pkg/motorMsg.h>
 
 // Define I/O channel pins
@@ -10,7 +11,11 @@ static const uint8_t IN_MOTOR_RIGHT_A = 5;
 static const uint8_t IN_MOTOR_RIGHT_B = 4;
 static const uint8_t EN_MOTOR_LEFT = 9;
 static const uint8_t EN_MOTOR_RIGHT = 3;
+
 static const uint8_t VOLTAGE_SENSOR_PIN = A0;
+
+static const int LINEAR_UP_PIN = 12;
+static const int LINEAR_DOWN_PIN = 13;
 
 // Motor Varible
 int maxSpeed = 255; //Max speed
@@ -25,6 +30,33 @@ long previousMillis = 0;
 
 // Initialize ROS Node Handler
 ros::NodeHandle nh;
+
+// Linear control callback for Ros Node
+void linearControlCallback(const std_msgs::UInt8& cmd_msg) {
+
+    if (cmd_msg.data > 128) {
+
+        // Assuming this is up
+        digitalWrite(LINEAR_UP_PIN, LOW);
+        digitalWrite(LINEAR_DOWN_PIN, HIGH);
+
+    }
+    
+    if (cmd_msg.data < 128) {
+
+        digitalWrite(LINEAR_UP_PIN, HIGH);
+        digitalWrite(LINEAR_DOWN_PIN, LOW);
+
+    }
+
+    if (cmd_msg.data == 128) {
+
+        digitalWrite(LINEAR_UP_PIN, LOW);
+        digitalWrite(LINEAR_DOWN_PIN, LOW);
+
+    }
+
+}
 
 // Handle all logic for motor controls
 void mainMotorController(int mySpeed, int myTurn, int type= 0, int time = 0) {
@@ -93,6 +125,14 @@ ros::Publisher voltageSensorPublisher("vBatt", &voltageData);
  */
 ros::Subscriber<rover_pkg::motorMsg> motorControlSubscriber("motor_control", motorControlCallback);
 
+/*!
+ * \brief Motor commands cmd in from the pi in an UInt8MultiArray.
+ * \details Uint8 for direction value
+ * UP - 255
+ * DOWN - 0
+ */
+ros::Subscriber<std_msgs::UInt8> linearControlSubscriber("linear_control", linearControlCallback);
+
 // Voltage Reading Calculation
 uint16_t readVoltageSensor() {
 
@@ -116,6 +156,10 @@ void setup() {
 	pinMode(EN_MOTOR_LEFT, OUTPUT);
 	pinMode(EN_MOTOR_RIGHT, OUTPUT);
 
+    // Initiallize linear actuator
+    pinMode(LINEAR_UP_PIN, OUTPUT);
+    pinMode(LINEAR_DOWN_PIN, OUTPUT);
+
     // Turn off motors - Initial State
     digitalWrite(IN_MOTOR_LEFT_A, LOW);
     digitalWrite(IN_MOTOR_LEFT_B, LOW);
@@ -128,6 +172,7 @@ void setup() {
     // Init ROS Nodes
     nh.initNode();
     nh.advertise(voltageSensorPublisher);
+    nh.subscribe(linearControlSubscriber);
     nh.subscribe(motorControlSubscriber);
 }
 
