@@ -11,6 +11,9 @@ static const int SERVO_TILT_PIN = 5;
 Servo tiltServo;
 Servo panServo;
 
+// Initialize ROS Node Handler
+ros::NodeHandle nh;
+
 bool calculate_servo_location(uint8_t& curr_pos, int new_val) {
 
     bool update = false;
@@ -25,6 +28,7 @@ bool calculate_servo_location(uint8_t& curr_pos, int new_val) {
 
 // Servo control callback for ROS Node
 void servoControlCallback(const rover_pkg::servo& cmd_msg) {
+
     
     // Read current position
     uint8_t curr_pan_val = panServo.read();
@@ -39,9 +43,6 @@ void servoControlCallback(const rover_pkg::servo& cmd_msg) {
     }
 
 }
-
-// Initialize ROS Node Handler
-ros::NodeHandle nh;
 
 /*!
  * \brief Motor commands cmd in from the pi in an UInt8MultiArray.

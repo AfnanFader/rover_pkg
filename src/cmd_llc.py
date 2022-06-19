@@ -15,7 +15,7 @@ class CommandHandler():
 
         self.cmd_timeout = 0.5 #seconds
         self.curr_time = 0
-        self.motor_is_reset = True
+        self.reset_cmd = True
 
         #--- Init ROS Node
         rospy.init_node('cmd_handler', disable_signals=True)
@@ -50,9 +50,6 @@ class CommandHandler():
 
     def send_motor_cmd(self, data):
 
-        self.curr_time = time.monotonic()
-        self.motor_is_reset = False
-
         if data == "w":
             self.update_motor_cmd(180,0,0,0)
         elif data == "s":
@@ -78,9 +75,9 @@ class CommandHandler():
 
     def send_linear_actuator_cmd(self, data):
         if data == "q":
-            self.linear_cmd = 0
+            self.linear_cmd.data = 0
         else:
-            self.linear_cmd = 255
+            self.linear_cmd.data = 255
             
         self.ros_pub_linear_direction.publish(self.linear_cmd)
 
@@ -89,6 +86,8 @@ class CommandHandler():
 
     def command_received(self, message):
 
+        self.curr_time = time.monotonic()
+        self.reset_cmd = False
 
         rospy.loginfo("[CmdHndlr] DATA - {}".format(message.data))
 
@@ -109,13 +108,17 @@ class CommandHandler():
         while not rospy.is_shutdown():
 
             # reset motor when idle
-            if (time.monotonic() - self.curr_time) > self.cmd_timeout and not self.motor_is_reset:
+            if (time.monotonic() - self.curr_time) > self.cmd_timeout and not self.reset_cmd:
                 
                 rospy.loginfo("[CmdHndlr] Reset Motor")
+                
+                #-- Reset Cmd Value
                 self.update_motor_cmd(0,0,0,0)
+                self.linear_cmd.data = 128
 
+                self.ros_pub_linear_direction.publish(self.linear_cmd)
                 self.ros_pub_motor_control.publish(self.motor_cmd)
-                self.motor_is_reset = True
+                self.reset_cmd = True
 
 
 if __name__ == "__main__":

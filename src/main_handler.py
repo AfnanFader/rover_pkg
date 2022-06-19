@@ -18,7 +18,7 @@ class ZmqServer():
         #ROS instance
         rospy.init_node('Zmq_Server',disable_signals=True)
         self.data = String()
-        self.ros_pub_motor_control = rospy.Publisher("/cmd_val", String, queue_size=2)
+        self.ros_pub_motor_control = rospy.Publisher("/cmd_val", String, queue_size=5)
         rospy.loginfo("[ZmqServer] Motor arduino publisher initialized")
         
         #ZMQ instance

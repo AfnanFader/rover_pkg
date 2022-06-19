@@ -14,8 +14,8 @@ static const uint8_t EN_MOTOR_RIGHT = 3;
 
 static const uint8_t VOLTAGE_SENSOR_PIN = A0;
 
-static const int LINEAR_UP_PIN = 12;
-static const int LINEAR_DOWN_PIN = 13;
+static const int LINEAR_UP_PIN = 1;
+static const int LINEAR_DOWN_PIN = 2;
 
 // Motor Varible
 int maxSpeed = 255; //Max speed
@@ -36,14 +36,14 @@ void linearControlCallback(const std_msgs::UInt8& cmd_msg) {
 
     if (cmd_msg.data > 128) {
 
-        // Assuming this is up
         digitalWrite(LINEAR_UP_PIN, LOW);
         digitalWrite(LINEAR_DOWN_PIN, HIGH);
-
+        
     }
     
     if (cmd_msg.data < 128) {
 
+        nh.loginfo("val < 128");
         digitalWrite(LINEAR_UP_PIN, HIGH);
         digitalWrite(LINEAR_DOWN_PIN, LOW);
 
@@ -51,8 +51,9 @@ void linearControlCallback(const std_msgs::UInt8& cmd_msg) {
 
     if (cmd_msg.data == 128) {
 
-        digitalWrite(LINEAR_UP_PIN, LOW);
-        digitalWrite(LINEAR_DOWN_PIN, LOW);
+        nh.loginfo("STOP");
+        digitalWrite(LINEAR_UP_PIN, HIGH);
+        digitalWrite(LINEAR_DOWN_PIN, HIGH);
 
     }
 
