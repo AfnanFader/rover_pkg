@@ -18,10 +18,12 @@ ros::NodeHandle nh;
 
 bool calculate_servo_location(uint8_t& curr_pos, int new_val) {
 
+    nh.loginfo("update enter");
     bool update = false;
-    uint8_t update_val = curr_pos + new_val;
+    int update_val = curr_pos + new_val;
 
     if (update_val >= 0 || update_val <= 180) {
+        nh.loginfo("update is true");
         update = true;
     }
 
@@ -30,18 +32,17 @@ bool calculate_servo_location(uint8_t& curr_pos, int new_val) {
 
 // Servo control callback for ROS Node
 void servoControlCallback(const rover_pkg::servo& cmd_msg) {
-
     
     // Read current position
     uint8_t curr_pan_val = panServo.read();
     uint8_t curr_tilt_val = tiltServo.read();
 
     if (calculate_servo_location(curr_pan_val, cmd_msg.pan)) {
-        panServo.write(cmd_msg.pan);
+        panServo.write((curr_pan_val + cmd_msg.pan));
     }
 
     if (calculate_servo_location(curr_tilt_val, cmd_msg.tilt)) {
-        tiltServo.write(cmd_msg.tilt);
+        tiltServo.write((curr_tilt_val + cmd_msg.tilt));
     }
 
 }
