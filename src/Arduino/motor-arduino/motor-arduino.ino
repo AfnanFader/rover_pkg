@@ -36,6 +36,7 @@ void linearControlCallback(const std_msgs::UInt8& cmd_msg) {
 
     if (cmd_msg.data > 128) {
 
+        nh.loginfo("val > 128");
         digitalWrite(LINEAR_UP_PIN, LOW);
         digitalWrite(LINEAR_DOWN_PIN, HIGH);
         
