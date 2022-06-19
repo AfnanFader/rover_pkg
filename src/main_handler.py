@@ -1,4 +1,4 @@
-#!/usr/bin/env
+#!/usr/bin/env python3
 
 import rospy
 from std_msgs.msg import String
@@ -8,6 +8,8 @@ import time, zmq
 class movement_hander():
     def __init__(self) -> None:
         pass
+
+
 
 class ZmqServer():
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env
+#!/usr/bin/env python3
 
 """
 Class for message distribution and handles all message transmisison to the arduino class.
@@ -101,10 +101,7 @@ class CommandHandler():
         rospy.loginfo("[CmdHndlr] Main Loop Running ..")
 
         while not rospy.is_shutdown():
-            
-            if KeyboardInterrupt:
-                rospy.signal_shutdown("Goodbye")
-            # rate.sleep()
+            pass
 
 
 if __name__ == "__main__":
