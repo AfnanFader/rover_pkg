@@ -4,8 +4,8 @@
 #include <rover_pkg/servo.h>
 
 // Define I/O channel pins
-static const int SERVO_PAN_PIN = 1;
-static const int SERVO_TILT_PIN = 2;
+static const int SERVO_PAN_PIN = 6;
+static const int SERVO_TILT_PIN = 5;
 
 // Servo Objects
 Servo tiltServo;
