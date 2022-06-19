@@ -13,7 +13,8 @@ class CommandHandler():
     
     def __init__(self):
 
-        self.is_idle = True
+        self.cmd_timeout = 0.5 #seconds
+        self.curr_time = 0
 
         #--- Init ROS Node
         rospy.init_node('cmd_handler', disable_signals=True)
@@ -47,6 +48,8 @@ class CommandHandler():
         self.servo_cmd.tilt = tilt
 
     def send_motor_cmd(self, data):
+
+        self.curr_time = time.monotonic()
 
         if data == "w":
             self.update_motor_cmd(180,0,0,0)
@@ -84,6 +87,7 @@ class CommandHandler():
 
     def command_received(self, message):
 
+
         rospy.loginfo("[CmdHndlr] DATA - {}".format(message.data))
 
         if message.data == "w" or message.data == "a" or message.data == "s" or message.data == "d":
@@ -101,7 +105,11 @@ class CommandHandler():
         rospy.loginfo("[CmdHndlr] Main Loop Running ..")
 
         while not rospy.is_shutdown():
-            pass
+
+            # reset motor when idle
+            if (time.monotonic() - self.curr_time) > self.cmd_timeout:
+                self.update_motor_cmd(0,0,0,0)
+                self.ros_pub_motor_control(self.motor_cmd)
 
 
 if __name__ == "__main__":
