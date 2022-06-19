@@ -11,6 +11,8 @@ static const int SERVO_TILT_PIN = 5;
 Servo tiltServo;
 Servo panServo;
 
+// Servo value
+
 // Initialize ROS Node Handler
 ros::NodeHandle nh;
 

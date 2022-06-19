@@ -82,26 +82,17 @@ void mainMotorController(int mySpeed, int myTurn, int type= 0, int time = 0) {
     if (leftSpeed > 0) {
         digitalWrite(IN_MOTOR_LEFT_A, HIGH);
         digitalWrite(IN_MOTOR_LEFT_B, LOW);
-        digitalWrite(IN_MOTOR_RIGHT_A, LOW);
-        digitalWrite(IN_MOTOR_RIGHT_B, HIGH);
     } else {
-        digitalWrite(IN_MOTOR_LEFT_A, 0);
-        digitalWrite(IN_MOTOR_LEFT_B, 1);
-        digitalWrite(IN_MOTOR_RIGHT_A, 1);
-        digitalWrite(IN_MOTOR_RIGHT_B, 0);
+        digitalWrite(IN_MOTOR_LEFT_A, LOW);
+        digitalWrite(IN_MOTOR_LEFT_B, HIGH);
     }
 
     if (rightSpeed > 0) {
-        digitalWrite(IN_MOTOR_LEFT_A, 1);
-        digitalWrite(IN_MOTOR_LEFT_B, 0);
-        digitalWrite(IN_MOTOR_RIGHT_A, 0);
-        digitalWrite(IN_MOTOR_RIGHT_B, 1);
-
+        digitalWrite(IN_MOTOR_RIGHT_A, HIGH);
+        digitalWrite(IN_MOTOR_RIGHT_B, LOW);
     } else {
-        digitalWrite(IN_MOTOR_LEFT_A, 0);
-        digitalWrite(IN_MOTOR_LEFT_B, 1);
-        digitalWrite(IN_MOTOR_RIGHT_A, 1);
-        digitalWrite(IN_MOTOR_RIGHT_B, 0);
+        digitalWrite(IN_MOTOR_RIGHT_A, LOW);
+        digitalWrite(IN_MOTOR_RIGHT_B, HIGH);
     }
 }
 

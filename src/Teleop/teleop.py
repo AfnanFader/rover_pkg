@@ -42,7 +42,7 @@ def pygameMain():
         help_str = 'Use arrow keys for Servo.'
         writeText(window, help_str, 20, 50, small_font)
         help_str = 'Use WASD for Motor.'
-        writeText(window, help_str, 20, 50, small_font)
+        writeText(window, help_str, 20, 70, small_font)
         help_2 = 'Q/E - Linear UP/DOWN  : ESC to exit'
         writeText(window, help_2, 20, 100, small_font)
 
