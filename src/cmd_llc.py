@@ -1,4 +1,4 @@
-#!/usr/bin/env
+#!/usr/bin/env python3
 
 """
 Class for message distribution and handles all message transmisison to the arduino class.
@@ -20,8 +20,7 @@ class CommandHandler():
         
         #--- Create the Subscriber to listen
         self.ros_sub_wifi_node = rospy.Subscriber("/cmd_val", String, self.command_received)
-        # self.ros_sub_voltage_sensor = rospy.Subscriber("/vBatt", UInt16, self.set_actuators_from_cmdvel)
-        rospy.loginfo("[CmdHndlr] Command Subscribers has been initialized ...")
+        rospy.loginfo("[CmdHndlr] Command mode has been initialized ...")
 
         #--- Create the motor arduino publisher
         self.ros_pub_motor_control = rospy.Publisher("/motor_control", motorMsg, queue_size=2)
@@ -103,8 +102,6 @@ class CommandHandler():
 
         while not rospy.is_shutdown():
             pass
-
-            # rate.sleep()
 
 
 if __name__ == "__main__":

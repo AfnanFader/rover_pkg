@@ -1,8 +1,15 @@
-#!/usr/bin/env
+#!/usr/bin/env python3
 
 import rospy
 from std_msgs.msg import String
 import time, zmq
+
+
+class movement_hander():
+    def __init__(self) -> None:
+        pass
+
+
 
 class ZmqServer():
 
@@ -23,7 +30,7 @@ class ZmqServer():
 
         rospy.loginfo("[ZmqServer] Waiting for Client")
         self.socket.send(b'1')
-
+        rospy.loginfo("[ZmqServer] Client Connected!")
         rate = rospy.Rate(10)
 
         try:
