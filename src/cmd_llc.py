@@ -20,8 +20,7 @@ class CommandHandler():
         
         #--- Create the Subscriber to listen
         self.ros_sub_wifi_node = rospy.Subscriber("/cmd_val", String, self.command_received)
-        # self.ros_sub_voltage_sensor = rospy.Subscriber("/vBatt", UInt16, self.set_actuators_from_cmdvel)
-        rospy.loginfo("[CmdHndlr] Command Subscribers has been initialized ...")
+        rospy.loginfo("[CmdHndlr] Command mode has been initialized ...")
 
         #--- Create the motor arduino publisher
         self.ros_pub_motor_control = rospy.Publisher("/motor_control", motorMsg, queue_size=2)
@@ -102,8 +101,9 @@ class CommandHandler():
         rospy.loginfo("[CmdHndlr] Main Loop Running ..")
 
         while not rospy.is_shutdown():
-            pass
-
+            
+            if KeyboardInterrupt:
+                rospy.signal_shutdown("Goodbye")
             # rate.sleep()
 
 
